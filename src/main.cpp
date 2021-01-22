@@ -1,11 +1,4 @@
-#include "daisy_seed.h"
-
-// Use the daisy namespace to prevent having to type
-// daisy:: before all libdaisy functions
-using namespace daisy;
-
-// Declare a DaisySeed object called hardware
-DaisySeed hardware;
+#include "../include/PedalConfig.h"
 
 int main(void)
 {
@@ -14,16 +7,19 @@ int main(void)
     led_state = true;
 
     // Configure and Initialize the Daisy Seed
-    // These are separate to allow reconfiguration of any of the internal
-    // components before initialization.
-    hardware.Configure();
-    hardware.Init();
+    hw.Configure();
+    hw.Init();
+
+    // Initialize debug printing
+    initDebugPrint(true);
+    debugPrintln("Starting DaisyPedal...");
 
     // Loop forever
     for (;;)
     {
         // Set the onboard LED
-        hardware.SetLed(led_state);
+        hw.SetLed(led_state);
+        debugPrintln((led_state) ? "on" : "off");
 
         // Toggle the LED state for the next time around.
         led_state = !led_state;

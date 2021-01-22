@@ -25,8 +25,13 @@
         {
             "label": "program-dfu",
             "type": "shell",
-            "command": "make program-dfu",
-            "problemMatcher": []
+            "command": "make clean; make; make program-dfu",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
         },
         {
             "label": "build_libdaisy",
