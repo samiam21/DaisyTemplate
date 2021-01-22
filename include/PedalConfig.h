@@ -5,8 +5,8 @@
 
 #define DEBUG 1
 
-#define BLOCKSIZE 5
-#define DAISY_SAMPLE_RATE AUDIO_SR_96K
+#define BLOCKSIZE 1
+#define DAISY_SAMPLE_RATE daisy::SaiHandle::Config::SampleRate::SAI_96KHZ
 
 #define AUDIO_IN_CH 1
 #define AUDIO_OUT_CH 0

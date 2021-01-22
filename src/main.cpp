@@ -1,5 +1,9 @@
 #include "../include/PedalConfig.h"
 
+// Effect switching parameters
+// volatile EffectType selectedEffectType = UNSET;
+// IEffect *currentEffect;
+
 int main(void)
 {
     // Declare a variable to store the state we want to set for the LED.
@@ -13,6 +17,10 @@ int main(void)
     // Initialize debug printing
     initDebugPrint(true);
     debugPrintln("Starting DaisyPedal...");
+
+    // Update the block size and sample rate to minimize noise
+    hw.SetAudioBlockSize(BLOCKSIZE);
+    hw.SetAudioSampleRate(DAISY_SAMPLE_RATE);
 
     // Loop forever
     for (;;)
