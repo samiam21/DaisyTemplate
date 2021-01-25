@@ -4,17 +4,21 @@
 // volatile EffectType selectedEffectType = UNSET;
 // IEffect *currentEffect;
 
+//Configure and initialize button
+Switch button1;
+Led led1;
+
 int main(void)
 {
-    // Declare a variable to store the state we want to set for the LED.
-    bool led_state;
-    led_state = true;
-
     // Configure and Initialize the Daisy Seed
     hw.Configure();
     hw.Init();
 
-    // Initialize debug printing
+    //Set button to pin 28, to be updated at a 1kHz  samplerate
+    button1.Init(hw.GetPin(effectSPSTPin1), 1000, Switch::Type::TYPE_MOMENTARY, Switch::Polarity::POLARITY_NORMAL, Switch::Pull::PULL_UP);
+    led1.Init(hw.GetPin(effectLedPin1), false);
+
+    // Initialize debug printing (true = wait for COM connection before continuing)
     initDebugPrint(true);
     debugPrintln("Starting DaisyPedal...");
 
@@ -25,14 +29,13 @@ int main(void)
     // Loop forever
     for (;;)
     {
-        // Set the onboard LED
-        hw.SetLed(led_state);
-        debugPrintln((led_state) ? "on" : "off");
+        //Debounce the button
+        button1.Debounce();
 
-        // Toggle the LED state for the next time around.
-        led_state = !led_state;
+        led1.Set(button1.Pressed() ? 1.f : 0.f);
+        led1.Update();
 
-        // Wait 500ms
-        System::Delay(1500);
+        //wait 1 ms
+        System::Delay(1);
     }
 }
