@@ -17,27 +17,27 @@
 #define initDebugPrint(hw, pcBlock)                                                                       \
     {                                                                                                 \
         if (DEBUG)                                                                                    \
-            hw.StartLog(pcBlock); /* true == wait for PC: will block until a terminal is connected */ \
+            hw->StartLog(pcBlock); /* true == wait for PC: will block until a terminal is connected */ \
     }
 #define debugPrintln(hw, msg)      \
     {                          \
         if (DEBUG)             \
-            hw.PrintLine(msg); \
+            hw->PrintLine(msg); \
     }
 #define debugPrint(hw, msg)    \
     {                      \
         if (DEBUG)         \
-            hw.Print(msg); \
+            hw->Print(msg); \
     }
 #define debugPrintlnF(hw, msg, param)     \
     {                                 \
         if (DEBUG)                    \
-            hw.PrintLine(msg, param); \
+            hw->PrintLine(msg, param); \
     }
 #define debugPrintF(hw, msg, param)   \
     {                             \
         if (DEBUG)                \
-            hw.Print(msg, param); \
+            hw->Print(msg, param); \
     }
 
 #define PI_VAL 3.14159265

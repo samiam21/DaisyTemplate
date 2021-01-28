@@ -7,7 +7,7 @@
 using namespace daisy;
 
 // Declare a DaisySeed object called hw
-DaisySeed hw;
+DaisySeed *hw;
 
 // Effect switching parameters
 volatile EffectType selectedEffectType = UNSET;
@@ -46,23 +46,23 @@ bool ReadSelectedEffect()
 int main(void)
 {
     // Configure and Initialize the Daisy Seed
-    hw.Configure();
-    hw.Init();
+    hw->Configure();
+    hw->Init();
 
     // Initialize debug printing (true = wait for COM connection before continuing)
     initDebugPrint(hw, true);
     debugPrintln(hw, "Starting DaisyPedal...");
 
     // Update the block size and sample rate to minimize noise
-    hw.SetAudioBlockSize(BLOCKSIZE);
-    hw.SetAudioSampleRate(DAISY_SAMPLE_RATE);
+    hw->SetAudioBlockSize(BLOCKSIZE);
+    hw->SetAudioSampleRate(DAISY_SAMPLE_RATE);
 
 #ifndef BYPASS_SELECTOR
     // Initialize the selector pins
-    selectorPin1.Init(hw.GetPin(effectSelectorPin1), 1, Switch::Type::TYPE_MOMENTARY, Switch::Polarity::POLARITY_NORMAL, Switch::Pull::PULL_UP);
-    selectorPin2.Init(hw.GetPin(effectSelectorPin2), 1, Switch::Type::TYPE_MOMENTARY, Switch::Polarity::POLARITY_NORMAL, Switch::Pull::PULL_UP);
-    selectorPin3.Init(hw.GetPin(effectSelectorPin3), 1, Switch::Type::TYPE_MOMENTARY, Switch::Polarity::POLARITY_NORMAL, Switch::Pull::PULL_UP);
-    selectorPin4.Init(hw.GetPin(effectSelectorPin4), 1, Switch::Type::TYPE_MOMENTARY, Switch::Polarity::POLARITY_NORMAL, Switch::Pull::PULL_UP);
+    selectorPin1.Init(hw->GetPin(effectSelectorPin1), 1, Switch::Type::TYPE_MOMENTARY, Switch::Polarity::POLARITY_NORMAL, Switch::Pull::PULL_UP);
+    selectorPin2.Init(hw->GetPin(effectSelectorPin2), 1, Switch::Type::TYPE_MOMENTARY, Switch::Polarity::POLARITY_NORMAL, Switch::Pull::PULL_UP);
+    selectorPin3.Init(hw->GetPin(effectSelectorPin3), 1, Switch::Type::TYPE_MOMENTARY, Switch::Polarity::POLARITY_NORMAL, Switch::Pull::PULL_UP);
+    selectorPin4.Init(hw->GetPin(effectSelectorPin4), 1, Switch::Type::TYPE_MOMENTARY, Switch::Polarity::POLARITY_NORMAL, Switch::Pull::PULL_UP);
 
     // Read the selected effect
     ReadSelectedEffect();
@@ -73,11 +73,11 @@ int main(void)
 
     // Start the effect
     debugPrintlnF(hw, "Starting: %s", currentEffect->GetEffectName());
-    currentEffect->Setup(&hw);
-    hw.StartAudio((AudioHandle::AudioCallback)[](float **in, float **out, size_t size) { return currentEffect->AudioCallback(in, out, size); });
+    currentEffect->Setup(hw);
+    hw->StartAudio((AudioHandle::AudioCallback)[](float **in, float **out, size_t size) { return currentEffect->AudioCallback(in, out, size); });
 
     // Turn on the onboard LED
-    hw.SetLed(true);
+    hw->SetLed(true);
 
     // Loop forever
     for (;;)
@@ -94,8 +94,8 @@ int main(void)
 
             // Start the new effect
             debugPrintlnF(hw, "Switching To: %s", currentEffect->GetEffectName());
-            currentEffect->Setup(&hw);
-            hw.StartAudio((AudioHandle::AudioCallback)[](float **in, float **out, size_t size) { return currentEffect->AudioCallback(in, out, size); });
+            currentEffect->Setup(hw);
+            hw->StartAudio((AudioHandle::AudioCallback)[](float **in, float **out, size_t size) { return currentEffect->AudioCallback(in, out, size); });
         }
     #endif
 
