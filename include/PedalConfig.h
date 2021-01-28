@@ -14,34 +14,27 @@
 // NOTE: If you bypass the selector, make sure the selectedEffectType in main.cpp is set to the desired effect
 // #define BYPASS_SELECTOR // Bypasses the effect selector
 
-// Use the daisy namespace to prevent having to type
-// daisy:: before all libdaisy functions
-using namespace daisy;
-
-// Declare a DaisySeed object called hw
-DaisySeed hw;
-
-#define initDebugPrint(pcBlock)                                                                       \
+#define initDebugPrint(hw, pcBlock)                                                                       \
     {                                                                                                 \
         if (DEBUG)                                                                                    \
             hw.StartLog(pcBlock); /* true == wait for PC: will block until a terminal is connected */ \
     }
-#define debugPrintln(msg)      \
+#define debugPrintln(hw, msg)      \
     {                          \
         if (DEBUG)             \
             hw.PrintLine(msg); \
     }
-#define debugPrint(msg)    \
+#define debugPrint(hw, msg)    \
     {                      \
         if (DEBUG)         \
             hw.Print(msg); \
     }
-#define debugPrintlnF(msg, param)     \
+#define debugPrintlnF(hw, msg, param)     \
     {                                 \
         if (DEBUG)                    \
             hw.PrintLine(msg, param); \
     }
-#define debugPrintF(msg, param)   \
+#define debugPrintF(hw, msg, param)   \
     {                             \
         if (DEBUG)                \
             hw.Print(msg, param); \

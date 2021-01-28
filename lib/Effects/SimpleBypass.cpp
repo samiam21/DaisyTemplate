@@ -1,7 +1,8 @@
 #include "SimpleBypass.h"
 
-void SimpleBypass::Setup()
+void SimpleBypass::Setup(daisy::DaisySeed* hardware)
 {
+    hw = hardware;
 }
 
 void SimpleBypass::AudioCallback(float **in, float **out, size_t size)
@@ -22,5 +23,5 @@ void SimpleBypass::Loop()
 
 char *SimpleBypass::GetEffectName()
 {
-    return "Simple Bypass Test";
+    return (char*)"Simple Bypass";
 }

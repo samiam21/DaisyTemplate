@@ -2,13 +2,46 @@
 #include "../include/IEffect.h"
 #include "../include/EffectType.h"
 
+// Use the daisy namespace to prevent having to type
+// daisy:: before all libdaisy functions
+using namespace daisy;
+
+// Declare a DaisySeed object called hw
+DaisySeed hw;
+
 // Effect switching parameters
 volatile EffectType selectedEffectType = UNSET;
 IEffect *currentEffect;
 
-//Configure and initialize button
-Switch button1;
-Led led1;
+Switch selectorPin1;
+Switch selectorPin2;
+Switch selectorPin3;
+Switch selectorPin4;
+
+/**
+ * Sets the selected effect type based on reading the selector
+ */
+bool ReadSelectedEffect()
+{
+    // Read the state of the encoder pins
+    uint32_t pin1 = (uint32_t)selectorPin1.RawState();
+    uint32_t pin2 = (uint32_t)selectorPin2.RawState();
+    uint32_t pin3 = (uint32_t)selectorPin3.RawState();
+    uint32_t pin4 = (uint32_t)selectorPin4.RawState();
+
+    // Get the combined value and set the effect type
+    uint32_t combined = pin4 | (pin3 << 1) | (pin2 << 2) | (pin1 << 3);
+
+    if ((EffectType)combined != selectedEffectType)
+    {
+        selectedEffectType = (EffectType)(combined);
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
 
 int main(void)
 {
@@ -16,28 +49,52 @@ int main(void)
     hw.Configure();
     hw.Init();
 
-    //Set button to pin 28, to be updated at a 1kHz  samplerate
-    button1.Init(hw.GetPin(effectSPSTPin1), 1000, Switch::Type::TYPE_MOMENTARY, Switch::Polarity::POLARITY_NORMAL, Switch::Pull::PULL_UP);
-    led1.Init(hw.GetPin(effectLedPin1), false);
-
     // Initialize debug printing (true = wait for COM connection before continuing)
-    initDebugPrint(true);
-    debugPrintln("Starting DaisyPedal...");
+    initDebugPrint(hw, true);
+    debugPrintln(hw, "Starting DaisyPedal...");
 
     // Update the block size and sample rate to minimize noise
     hw.SetAudioBlockSize(BLOCKSIZE);
     hw.SetAudioSampleRate(DAISY_SAMPLE_RATE);
 
+    // Initialize the selector pins
+    selectorPin1.Init(hw.GetPin(effectSelectorPin1), 1, Switch::Type::TYPE_MOMENTARY, Switch::Polarity::POLARITY_NORMAL, Switch::Pull::PULL_UP);
+    selectorPin2.Init(hw.GetPin(effectSelectorPin2), 1, Switch::Type::TYPE_MOMENTARY, Switch::Polarity::POLARITY_NORMAL, Switch::Pull::PULL_UP);
+    selectorPin3.Init(hw.GetPin(effectSelectorPin3), 1, Switch::Type::TYPE_MOMENTARY, Switch::Polarity::POLARITY_NORMAL, Switch::Pull::PULL_UP);
+    selectorPin4.Init(hw.GetPin(effectSelectorPin4), 1, Switch::Type::TYPE_MOMENTARY, Switch::Polarity::POLARITY_NORMAL, Switch::Pull::PULL_UP);
+
+    // Set the current effect
+    currentEffect = GetEffectObject(selectedEffectType);
+
+    // Start the effect
+    debugPrintlnF(hw, "Starting: %s", currentEffect->GetEffectName());
+    currentEffect->Setup(&hw);
+    hw.StartAudio((AudioHandle::AudioCallback)[](float **in, float **out, size_t size) { return currentEffect->AudioCallback(in, out, size); });
+
+    // Turn on the onboard LED
+    hw.SetLed(true);
+
     // Loop forever
     for (;;)
     {
-        //Debounce the button
-        button1.Debounce();
+    #ifndef BYPASS_SELECTOR
+        // Check if we have a new effect type and switch to the new state
+        if (ReadSelectedEffect())
+        {
+            // Clean up and stop the old effect
+            currentEffect->Cleanup();
 
-        led1.Set(button1.Pressed() ? 1.f : 0.f);
-        led1.Update();
+            // Get the new effect object
+            currentEffect = GetEffectObject(selectedEffectType);
 
-        //wait 1 ms
-        System::Delay(1);
+            // Start the new effect
+            debugPrintlnF(hw, "Switching To: %s", currentEffect->GetEffectName());
+            currentEffect->Setup(&hw);
+            hw.StartAudio((AudioHandle::AudioCallback)[](float **in, float **out, size_t size) { return currentEffect->AudioCallback(in, out, size); });
+        }
+    #endif
+
+        // Execute the effect loop commands
+        currentEffect->Loop();
     }
 }

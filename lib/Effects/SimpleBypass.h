@@ -30,7 +30,7 @@
 class SimpleBypass : public IEffect
 {
 public:
-    void Setup();
+    void Setup(daisy::DaisySeed* hardware);
     void Cleanup();
     void AudioCallback(float **in, float **out, size_t size);
     void Loop();
