@@ -2,7 +2,7 @@
 #define EFFECT_TYPE_H
 
 #include "IEffect.h"
-#include "../lib/Effects/SimpleBypass/SimpleBypass.h"
+#include "../lib/Effects/SimpleBypass.h"
 
 // Effect Objects
 SimpleBypass simpleBypass;

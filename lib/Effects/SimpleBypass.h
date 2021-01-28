@@ -1,6 +1,7 @@
 #ifndef BYPASS_H
 #define BYPASS_H
 
+#include "daisy_seed.h"
 #include "../../../include/IEffect.h"
 #include "../../../include/PedalConfig.h"
 

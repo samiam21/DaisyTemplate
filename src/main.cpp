@@ -1,8 +1,10 @@
 #include "../include/PedalConfig.h"
+#include "../include/IEffect.h"
+#include "../include/EffectType.h"
 
 // Effect switching parameters
-// volatile EffectType selectedEffectType = UNSET;
-// IEffect *currentEffect;
+volatile EffectType selectedEffectType = UNSET;
+IEffect *currentEffect;
 
 //Configure and initialize button
 Switch button1;
