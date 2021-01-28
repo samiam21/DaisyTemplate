@@ -57,11 +57,16 @@ int main(void)
     hw.SetAudioBlockSize(BLOCKSIZE);
     hw.SetAudioSampleRate(DAISY_SAMPLE_RATE);
 
+#ifndef BYPASS_SELECTOR
     // Initialize the selector pins
     selectorPin1.Init(hw.GetPin(effectSelectorPin1), 1, Switch::Type::TYPE_MOMENTARY, Switch::Polarity::POLARITY_NORMAL, Switch::Pull::PULL_UP);
     selectorPin2.Init(hw.GetPin(effectSelectorPin2), 1, Switch::Type::TYPE_MOMENTARY, Switch::Polarity::POLARITY_NORMAL, Switch::Pull::PULL_UP);
     selectorPin3.Init(hw.GetPin(effectSelectorPin3), 1, Switch::Type::TYPE_MOMENTARY, Switch::Polarity::POLARITY_NORMAL, Switch::Pull::PULL_UP);
     selectorPin4.Init(hw.GetPin(effectSelectorPin4), 1, Switch::Type::TYPE_MOMENTARY, Switch::Polarity::POLARITY_NORMAL, Switch::Pull::PULL_UP);
+
+    // Read the selected effect
+    ReadSelectedEffect();
+#endif
 
     // Set the current effect
     currentEffect = GetEffectObject(selectedEffectType);
