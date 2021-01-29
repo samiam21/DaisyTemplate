@@ -33,14 +33,14 @@ using namespace daisy;
 class ButtonTest : public IEffect
 {
 public:
-    void Setup(daisy::DaisySeed* hardware);
+    void Setup(daisy::DaisySeed *hardware);
     void Cleanup();
     void AudioCallback(float **in, float **out, size_t size);
     void Loop();
     char *GetEffectName();
 
 private:
-    bool isLed3On = false;
+    bool isMuted = false;
 
     Button button1;
     Button button2;
