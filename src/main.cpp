@@ -50,7 +50,7 @@ int main(void)
     hw->Init();
 
     // Initialize debug printing (true = wait for COM connection before continuing)
-    initDebugPrint(hw, true);
+    initDebugPrint(hw, false);
     debugPrintln(hw, "Starting DaisyPedal...");
 
     // Update the block size and sample rate to minimize noise
@@ -82,7 +82,7 @@ int main(void)
     // Loop forever
     for (;;)
     {
-    #ifndef BYPASS_SELECTOR
+#ifndef BYPASS_SELECTOR
         // Check if we have a new effect type and switch to the new state
         if (ReadSelectedEffect())
         {
@@ -97,7 +97,7 @@ int main(void)
             currentEffect->Setup(hw);
             hw->StartAudio((AudioHandle::AudioCallback)[](float **in, float **out, size_t size) { return currentEffect->AudioCallback(in, out, size); });
         }
-    #endif
+#endif
 
         // Execute the effect loop commands
         currentEffect->Loop();

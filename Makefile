@@ -1,6 +1,9 @@
 # Project Name
 TARGET = DaisyTemplate
 
+# Enable debugging for J-Link
+DEBUG = 1
+
 CPPFLAGS += -DUSBCON
 CPPFLAGS += -DUSBD_VID=0x0483
 CPPFLAGS += -DUSBD_PID=0x5740
