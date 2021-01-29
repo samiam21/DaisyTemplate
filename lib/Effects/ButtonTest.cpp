@@ -1,6 +1,6 @@
 #include "ButtonTest.h"
 
-void ButtonTest::Setup(daisy::DaisySeed* hardware)
+void ButtonTest::Setup(daisy::DaisySeed *hardware)
 {
     hw = hardware;
 
@@ -37,7 +37,7 @@ void ButtonTest::Cleanup()
 void ButtonTest::Loop()
 {
     // Button 1 turns on LED 1
-    if (button1.IsPressed())
+    if (button1.IsPressed(false))
     {
         led1.Set(1.0f);
         led1.Update();
@@ -49,7 +49,7 @@ void ButtonTest::Loop()
     }
 
     // Button 2 turns on LED 2
-    if (button2.IsPressed())
+    if (button2.IsPressed(false))
     {
         led2.Set(1.0f);
         led2.Update();
@@ -59,17 +59,17 @@ void ButtonTest::Loop()
         led2.Set(0);
         led2.Update();
     }
-    
+
     // Button 3 toggles LED 3
     if (button3.IsPressed())
     {
-        debugPrintln(hw, "pressed...");
         isLed3On = !isLed3On;
-        led2.Set(isLed3On ? 1.0f : 0);
+        led3.Set(isLed3On ? 1.0f : 0);
+        led3.Update();
     }
 }
 
 char *ButtonTest::GetEffectName()
 {
-    return (char*)"Button Test";
+    return (char *)"Button Test";
 }

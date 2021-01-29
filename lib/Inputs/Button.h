@@ -19,6 +19,11 @@ public:
     void Init(dsy_gpio_pin pin);
 
     /**
+     * Initialize the button with print capabilities
+     */
+    void Init(dsy_gpio_pin pin, DaisySeed *hardware);
+
+    /**
      * Checks if the button is pressed, accounting for debounce
      * @return Returns true if the button is pressed, false if not
      */
@@ -26,6 +31,8 @@ public:
 
 private:
     dsy_gpio_pin buttonPin;
+    DaisySeed *hw;
+    bool isDebugPrintingEnabled = false;
 
     const unsigned long buttonDebounce = 200;
     unsigned long lastButtonPress = 0;

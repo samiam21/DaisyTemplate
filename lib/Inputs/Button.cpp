@@ -9,6 +9,16 @@ void Button::Init(dsy_gpio_pin pin)
     button.Init(pin, 1000, Switch::Type::TYPE_MOMENTARY, Switch::Polarity::POLARITY_NORMAL, Switch::Pull::PULL_UP);
 }
 
+void Button::Init(dsy_gpio_pin pin, DaisySeed *hardware)
+{
+    // Set the hardware pointer for debug printing
+    hw = hardware;
+    isDebugPrintingEnabled = true;
+
+    // Initialize the button
+    Init(pin);
+}
+
 bool Button::IsPressed(bool debounce)
 {
     bool ret = false;
@@ -20,7 +30,7 @@ bool Button::IsPressed(bool debounce)
     if (debounce)
     {
         // Debounce the button and check for it pressed
-        uint32_t millis = System::GetTick();
+        uint32_t millis = System::GetNow();
         if (millis - lastButtonPress > buttonDebounce)
         {
             // Update last pressed time and set the return

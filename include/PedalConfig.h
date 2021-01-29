@@ -29,15 +29,15 @@
         if (DEBUG)          \
             hw->Print(msg); \
     }
-#define debugPrintlnF(hw, msg, param)  \
-    {                                  \
-        if (DEBUG)                     \
-            hw->PrintLine(msg, param); \
+#define debugPrintlnF(hw, msg, args...) \
+    {                                   \
+        if (DEBUG)                      \
+            hw->PrintLine(msg, args);   \
     }
-#define debugPrintF(hw, msg, param) \
-    {                               \
-        if (DEBUG)                  \
-            hw->Print(msg, param);  \
+#define debugPrintF(hw, msg, args...) \
+    {                                 \
+        if (DEBUG)                    \
+            hw->Print(msg, args);     \
     }
 
 #define PI_VAL 3.14159265
