@@ -11,6 +11,11 @@
 #define AUDIO_IN_CH 0
 #define AUDIO_OUT_CH 0
 
+#define KNOB_1_CHN 0
+#define KNOB_2_CHN 1
+#define KNOB_3_CHN 2
+#define KNOB_4_CHN 3
+
 // NOTE: If you bypass the selector, make sure the selectedEffectType in main.cpp is set to the desired effect
 // #define BYPASS_SELECTOR // Bypasses the effect selector
 

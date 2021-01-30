@@ -57,6 +57,15 @@ int main(void)
     hw->SetAudioBlockSize(BLOCKSIZE);
     hw->SetAudioSampleRate(DAISY_SAMPLE_RATE);
 
+    // Initialize the 4 knobs
+    AdcChannelConfig adcConfig[4];
+    adcConfig[KNOB_1_CHN].InitSingle(hw->GetPin(effectPotPin1));
+    adcConfig[KNOB_2_CHN].InitSingle(hw->GetPin(effectPotPin2));
+    adcConfig[KNOB_3_CHN].InitSingle(hw->GetPin(effectPotPin3));
+    adcConfig[KNOB_4_CHN].InitSingle(hw->GetPin(effectPotPin4));
+    hw->adc.Init(adcConfig, 4);
+    hw->adc.Start();
+
 #ifndef BYPASS_SELECTOR
     // Initialize the selector pins
     selectorPin1.Init(hw->GetPin(effectSelectorPin1), 1, Switch::Type::TYPE_MOMENTARY, Switch::Polarity::POLARITY_NORMAL, Switch::Pull::PULL_UP);

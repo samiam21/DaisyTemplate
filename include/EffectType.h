@@ -4,10 +4,12 @@
 #include "IEffect.h"
 #include "../lib/Effects/SimpleBypass.h"
 #include "../lib/Effects/ButtonTest.h"
+#include "../lib/Effects/KnobTest.h"
 
 // Effect Objects
 SimpleBypass simpleBypass;
 ButtonTest buttonTest;
+KnobTest knobTest;
 
 /**
  * The rotary encoder is using Gray code, not standard hex.
@@ -33,8 +35,9 @@ extern IEffect *GetEffectObject(EffectType type)
     {
     case BUTTONTEST:
         return (IEffect *)&buttonTest;
-    case HWTEST:
     case KNOBTEST:
+        return (IEffect *)&knobTest;
+    case HWTEST:
     case SIMPLEBYPASS:
     case UNSET:
     default:

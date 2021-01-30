@@ -4,6 +4,7 @@
 #include "daisy_seed.h"
 #include "../../../include/IEffect.h"
 #include "../../../include/PedalConfig.h"
+#include "../Inputs/Knob.h"
 
 /**********************************************
  * SimpleBypass Effect
@@ -30,16 +31,18 @@
 class SimpleBypass : public IEffect
 {
 public:
-    void Setup(daisy::DaisySeed* hardware);
+    void Setup(daisy::DaisySeed *hardware);
     void Cleanup();
     void AudioCallback(float **in, float **out, size_t size);
     void Loop();
     char *GetEffectName();
 
 private:
-    const float boostLevelMin = 30.0f;
-    const float boostLevelMax = 60.0f;
-    float boostLevel = 1.0f;
+    const float boostLevelMin = 10.0f;
+    const float boostLevelMax = 30.0f;
+    float boostLevel = 10.0f;
+
+    Knob knob1;
 };
 
 #endif

@@ -1,8 +1,10 @@
 #include "SimpleBypass.h"
 
-void SimpleBypass::Setup(daisy::DaisySeed* hardware)
+void SimpleBypass::Setup(daisy::DaisySeed *hardware)
 {
     hw = hardware;
+
+    knob1.Init(hw, KNOB_1_CHN, boostLevel, boostLevelMin, boostLevelMax);
 }
 
 void SimpleBypass::AudioCallback(float **in, float **out, size_t size)
@@ -19,9 +21,14 @@ void SimpleBypass::Cleanup()
 
 void SimpleBypass::Loop()
 {
+    // Knob 1 controls the boost level
+    if (knob1.SetNewValue(boostLevel))
+    {
+        debugPrintlnF(hw, "Updated the boost level to: %f", boostLevel);
+    }
 }
 
 char *SimpleBypass::GetEffectName()
 {
-    return (char*)"Simple Bypass";
+    return (char *)"Simple Bypass";
 }
