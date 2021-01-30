@@ -1,6 +1,9 @@
 # Project Name
 TARGET = DaisyTemplate
 
+# Enable debugging for J-Link
+DEBUG = 1
+
 CPPFLAGS += -DUSBCON
 CPPFLAGS += -DUSBD_VID=0x0483
 CPPFLAGS += -DUSBD_PID=0x5740
@@ -9,7 +12,7 @@ CPPFLAGS += -DUSB_PRODUCT="\"ELECTROSMITH_DAISY CDC in FS Mode\""
 CPPFLAGS += -DHAL_PCD_MODULE_ENABLED
 
 # Sources
-CPP_SOURCES = src/main.cpp
+CPP_SOURCES = src/main.cpp $(wildcard lib/Effects/*.cpp) $(wildcard lib/Inputs/*.cpp)
 
 # Library Locations
 LIBDAISY_DIR = lib/libdaisy

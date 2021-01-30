@@ -1,11 +1,15 @@
-#ifndef BYPASS_H
-#define BYPASS_H
+#ifndef TOGGLETEST_H
+#define TOGGLETEST_H
 
+#include "daisy_seed.h"
 #include "../../../include/IEffect.h"
 #include "../../../include/PedalConfig.h"
+#include "../Inputs/NFNToggle.h"
+
+using namespace daisy;
 
 /**********************************************
- * SimpleBypass Effect
+ * ToggleTest Effect
  * 
  * SPST 1 - 
  * SPST 2 - 
@@ -26,23 +30,21 @@
  * LED 4 - 
  **********************************************/
 
-class SimpleBypass : public IEffect
+class ToggleTest : public IEffect
 {
 public:
-    void Setup();
+    void Setup(daisy::DaisySeed *hardware);
     void Cleanup();
     void AudioCallback(float **in, float **out, size_t size);
     void Loop();
     char *GetEffectName();
 
 private:
-    size_t numChannels;
-    const int LED_MAX_VALUE = 256;
-    const int LED_MIN_VALUE = 0;
+    NFNToggle toggle;
 
-    const float boostLevelMin = 30.0f;
-    const float boostLevelMax = 60.0f;
-    float boostLevel = 1.0f;
+    Led led1;
+    Led led2;
+    Led led3;
 };
 
 #endif

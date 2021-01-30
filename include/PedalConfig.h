@@ -8,43 +8,41 @@
 #define BLOCKSIZE 1
 #define DAISY_SAMPLE_RATE daisy::SaiHandle::Config::SampleRate::SAI_96KHZ
 
-#define AUDIO_IN_CH 1
+#define AUDIO_IN_CH 0
 #define AUDIO_OUT_CH 0
+
+#define KNOB_1_CHN 0
+#define KNOB_2_CHN 1
+#define KNOB_3_CHN 2
+#define KNOB_4_CHN 3
 
 // NOTE: If you bypass the selector, make sure the selectedEffectType in main.cpp is set to the desired effect
 // #define BYPASS_SELECTOR // Bypasses the effect selector
 
-// Use the daisy namespace to prevent having to type
-// daisy:: before all libdaisy functions
-using namespace daisy;
-
-// Declare a DaisySeed object called hw
-DaisySeed hw;
-
-#define initDebugPrint(pcBlock)                                                                       \
-    {                                                                                                 \
-        if (DEBUG)                                                                                    \
-            hw.StartLog(pcBlock); /* true == wait for PC: will block until a terminal is connected */ \
+#define initDebugPrint(hw, pcBlock)                                                                    \
+    {                                                                                                  \
+        if (DEBUG)                                                                                     \
+            hw->StartLog(pcBlock); /* true == wait for PC: will block until a terminal is connected */ \
     }
-#define debugPrintln(msg)      \
-    {                          \
-        if (DEBUG)             \
-            hw.PrintLine(msg); \
+#define debugPrintln(hw, msg)   \
+    {                           \
+        if (DEBUG)              \
+            hw->PrintLine(msg); \
     }
-#define debugPrint(msg)    \
-    {                      \
-        if (DEBUG)         \
-            hw.Print(msg); \
+#define debugPrint(hw, msg) \
+    {                       \
+        if (DEBUG)          \
+            hw->Print(msg); \
     }
-#define debugPrintlnF(msg, param)     \
+#define debugPrintlnF(hw, msg, args...) \
+    {                                   \
+        if (DEBUG)                      \
+            hw->PrintLine(msg, args);   \
+    }
+#define debugPrintF(hw, msg, args...) \
     {                                 \
         if (DEBUG)                    \
-            hw.PrintLine(msg, param); \
-    }
-#define debugPrintF(msg, param)   \
-    {                             \
-        if (DEBUG)                \
-            hw.Print(msg, param); \
+            hw->Print(msg, args);     \
     }
 
 #define PI_VAL 3.14159265
