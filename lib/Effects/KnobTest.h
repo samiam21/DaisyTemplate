@@ -44,15 +44,19 @@ private:
 
     const float minKnob3Value = -5.0f;
     const float maxKnob3Value = 10.0f;
+    const float minKnob4Value = 0.0f;
+    const float maxKnob4Value = 1.0f;
 
     bool isLed3On = false;
     float led1Value = 0.0f;
     float led2Value = 0.0f;
     float knob3Value = 0.0f;
+    float knob4Value = 0.0f;
 
     Knob knob1;
     Knob knob2;
     Knob knob3;
+    Knob knob4;
 
     Led led1;
     Led led2;

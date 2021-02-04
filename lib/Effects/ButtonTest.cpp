@@ -8,14 +8,16 @@ void ButtonTest::Setup(daisy::DaisySeed *hardware)
     button1.Init(hw->GetPin(effectSPSTPin1));
     button2.Init(hw->GetPin(effectSPSTPin2));
     button3.Init(hw->GetPin(effectSPSTPin3));
+    button4.Init(hw->GetPin(effectSPSTPin4));
 
     // Initialize the LEDs
     led1.Init(hw->GetPin(effectLedPin1), false);
     led2.Init(hw->GetPin(effectLedPin2), false);
     led3.Init(hw->GetPin(effectLedPin3), false);
+    led4.Init(hw->GetPin(effectLedPin4), false);
 
-    led3.Set(isMuted ? 0 : 1.f);
-    led3.Update();
+    led4.Set(isMuted ? 0 : 1.f);
+    led4.Update();
 }
 
 void ButtonTest::AudioCallback(float **in, float **out, size_t size)
@@ -38,6 +40,8 @@ void ButtonTest::Cleanup()
     led2.Update();
     led3.Set(0);
     led3.Update();
+    led4.Set(0);
+    led4.Update();
 }
 
 void ButtonTest::Loop()
@@ -66,12 +70,24 @@ void ButtonTest::Loop()
         led2.Update();
     }
 
-    // Button 3 toggles LED 3
-    if (button3.IsPressed())
+    // Button 3 turns on LED 3
+    if (button3.IsPressed(false))
+    {
+        led3.Set(1.0f);
+        led3.Update();
+    }
+    else
+    {
+        led3.Set(0);
+        led3.Update();
+    }
+
+    // Button 4 toggles LED 4
+    if (button4.IsPressed())
     {
         isMuted = !isMuted;
-        led3.Set(isMuted ? 0 : 1.f);
-        led3.Update();
+        led4.Set(isMuted ? 0 : 1.f);
+        led4.Update();
     }
 }
 

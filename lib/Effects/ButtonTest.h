@@ -45,10 +45,12 @@ private:
     Button button1;
     Button button2;
     Button button3;
+    Button button4;
 
     Led led1;
     Led led2;
     Led led3;
+    Led led4;
 };
 
 #endif
