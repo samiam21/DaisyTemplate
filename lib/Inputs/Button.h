@@ -14,14 +14,9 @@ class Button
 {
 public:
     /**
-     * Initialize the button
-     */
-    void Init(dsy_gpio_pin pin);
-
-    /**
      * Initialize the button with print capabilities
      */
-    void Init(dsy_gpio_pin pin, DaisySeed *hardware);
+    void Init(DaisySeed *hardware, dsy_gpio_pin pin, u_int16_t holdTime = 2000);
 
     /**
      * Checks if the button is pressed, accounting for debounce
@@ -29,13 +24,19 @@ public:
      */
     bool IsPressed(bool debounce = true);
 
+    /**
+     * Checks if the button has been held longer than the configured hold time
+     * @return Returns true if the button is held, false if not
+     */
+    bool IsHeld();
+
 private:
     dsy_gpio_pin buttonPin;
     DaisySeed *hw;
-    bool isDebugPrintingEnabled = false;
 
     const unsigned long buttonDebounce = 200;
     unsigned long lastButtonPress = 0;
+    u_int16_t buttonHoldTime = 20000;
 
     Switch button;
 };
