@@ -1,22 +1,18 @@
 #include "Button.h"
 
-void Button::Init(dsy_gpio_pin pin)
+void Button::Init(DaisySeed *hardware, dsy_gpio_pin pin, u_int16_t holdTime)
 {
+    // Set the hardware pointer
+    hw = hardware;
+
     // Set the button pin for the class
     buttonPin = pin;
 
+    // Set the hold time
+    buttonHoldTime = holdTime;
+
     // Configure the button pin with the specific mode
-    button.Init(pin, 1000, Switch::Type::TYPE_MOMENTARY, Switch::Polarity::POLARITY_NORMAL, Switch::Pull::PULL_UP);
-}
-
-void Button::Init(dsy_gpio_pin pin, DaisySeed *hardware)
-{
-    // Set the hardware pointer for debug printing
-    hw = hardware;
-    isDebugPrintingEnabled = true;
-
-    // Initialize the button
-    Init(pin);
+    button.Init(pin, hw->AudioCallbackRate(), Switch::Type::TYPE_MOMENTARY, Switch::Polarity::POLARITY_NORMAL, Switch::Pull::PULL_UP);
 }
 
 bool Button::IsPressed(bool debounce)
@@ -42,6 +38,23 @@ bool Button::IsPressed(bool debounce)
     {
         // Check if the button is pressed
         ret = reading;
+    }
+
+    return ret;
+}
+
+bool Button::IsHeld()
+{
+    bool ret = false;
+
+    // Debounce the button
+    button.Debounce();
+
+    // Check for the button being held
+    float heldTime = button.TimeHeldMs();
+    if ((u_int16_t)heldTime >= buttonHoldTime)
+    {
+        ret = true;
     }
 
     return ret;

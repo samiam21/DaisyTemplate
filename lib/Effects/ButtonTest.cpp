@@ -5,10 +5,10 @@ void ButtonTest::Setup(daisy::DaisySeed *hardware)
     hw = hardware;
 
     // Initialize the buttons
-    button1.Init(hw->GetPin(effectSPSTPin1));
-    button2.Init(hw->GetPin(effectSPSTPin2));
-    button3.Init(hw->GetPin(effectSPSTPin3));
-    button4.Init(hw->GetPin(effectSPSTPin4));
+    button1.Init(hw, hw->GetPin(effectSPSTPin1));
+    button2.Init(hw, hw->GetPin(effectSPSTPin2));
+    button3.Init(hw, hw->GetPin(effectSPSTPin3));
+    button4.Init(hw, hw->GetPin(effectSPSTPin4));
 
     // Initialize the LEDs
     led1.Init(hw->GetPin(effectLedPin1), false);
@@ -70,11 +70,13 @@ void ButtonTest::Loop()
         led2.Update();
     }
 
-    // Button 3 turns on LED 3
-    if (button3.IsPressed(false))
+    // Button 3 toggles LED 3 with a long press
+    if (button3.IsHeld())
     {
         led3.Set(1.0f);
         led3.Update();
+
+        debugPrintln(hw, "Button 3 held");
     }
     else
     {
