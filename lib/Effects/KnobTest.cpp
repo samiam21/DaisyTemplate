@@ -8,6 +8,7 @@ void KnobTest::Setup(daisy::DaisySeed *hardware)
     knob1.Init(hw, KNOB_1_CHN, led1Value);
     knob2.Init(hw, KNOB_2_CHN, led2Value);
     knob3.Init(hw, KNOB_3_CHN, knob3Value, minKnob3Value, maxKnob3Value);
+    knob4.Init(hw, KNOB_4_CHN, knob4Value, minKnob4Value, maxKnob4Value);
 
     // Initialize the LEDs
     led1.Init(hw->GetPin(effectLedPin1), false);
@@ -57,6 +58,12 @@ void KnobTest::Loop()
     if (knob3.SetNewValue(knob3Value))
     {
         debugPrintlnF(hw, "Updated Knob 3 to: %f", knob3Value);
+    }
+
+    // Knob 4 prints out a value
+    if (knob4.SetNewValue(knob4Value))
+    {
+        debugPrintlnF(hw, "Updated Knob 4 to: %f", knob4Value);
     }
 }
 

@@ -50,7 +50,7 @@ int main(void)
     hw->Init();
 
     // Initialize debug printing (true = wait for COM connection before continuing)
-    initDebugPrint(hw, true);
+    initDebugPrint(hw, WAIT_FOR_SERIAL);
     debugPrintln(hw, "Starting DaisyPedal...");
 
     // Update the block size and sample rate to minimize noise
